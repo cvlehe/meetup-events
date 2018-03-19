@@ -37,6 +37,7 @@ class FeaturedPhoto {
         }
     }
     
+    //Get photo url from Featured photo - if photo link doesn't exist, use high res, if that doesn't exist, use thumb link
     func getPhotoUrl()->String? {
         if let photoLink = self.photoLink {
             return photoLink

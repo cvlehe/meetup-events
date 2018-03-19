@@ -32,6 +32,7 @@ class Event {
     private var featuredPhoto:FeaturedPhoto?
     var plainTextDescription:String?
     
+    //Initialization for event with fetched json
     init(json:[String:Any]) {
         if let created = json[Fields.Event.created] as? TimeInterval {
             self.created = Date(timeIntervalSince1970: created)
@@ -49,6 +50,7 @@ class Event {
             self.name = name
         }
         
+        //setting enum for event status
         if let status = json[Fields.Event.status] as? String {
             switch status {
             case Fields.Event.StatusValues.cancelled: self.status = .cancelled
@@ -110,6 +112,7 @@ class Event {
             self.description = description
         }
         
+        //setting enum for event visibility
         if let visibility = json[Fields.Event.visibility] as? String {
             switch visibility {
             case Fields.Event.VisibilityValues.public_limited: self.visibility = .publicLimited
@@ -133,15 +136,18 @@ class Event {
     }
     
 
-    
+    //Get events from API
     static func getEvents (searchText:String?, completion:@escaping (_ events:[Event])->Void) {
         let url = MeetupAPI.eventsURL
         var parameters = [String:Any]()
         parameters[MeetupAPI.Keys.key] = MeetupAPI.API_KEY
         parameters[MeetupAPI.Keys.sign] = true
+        
+        //If search text exists, add it to request
         if let text = searchText {
             parameters[MeetupAPI.Keys.text] = text
         }
+        
         parameters[MeetupAPI.Keys.fields] = [MeetupAPI.Values.featured_photo,MeetupAPI.Values.plain_text_description].joined(separator: ",")
         
         Alamofire.request(url, method: .get, parameters: parameters, encoding: URLEncoding(destination: .queryString),headers: nil)
@@ -158,6 +164,7 @@ class Event {
         }
     }
     
+    //convert response data to array of dictionaries
     private static func convertToArray(data:Data)->[[String:Any]]? {
         do {
             let array = try JSONSerialization.jsonObject(with: data) as? [[String : Any]]
@@ -167,6 +174,7 @@ class Event {
         }
     }
     
+    //Check User Defaults if event has been favorited
     func isFavorite ()->Bool {
         guard let array = UserDefaults.standard.array(forKey: UserDefaultKeys.favorites) as? [String] else {
             UserDefaults.standard.set([String](), forKey: UserDefaultKeys.favorites)
@@ -181,6 +189,7 @@ class Event {
         return array.contains(id)
     }
     
+    //Get photo url from fetched featured photo
     func getPhotoUrl () -> String? {
         return featuredPhoto?.getPhotoUrl()
     }
@@ -199,8 +208,11 @@ class Event {
         return "\(df.string(from: time)) - \(getLocalTimeString() ?? "")"
     }
     
+    //Toggle favorite status for event
     func toggleFavorite () {
         var array = [String]()
+        
+        // If array already exisits in User Defaults, set the array to stored array
         if let savedArray = UserDefaults.standard.array(forKey: UserDefaultKeys.favorites) as? [String] {
             array = savedArray
         }

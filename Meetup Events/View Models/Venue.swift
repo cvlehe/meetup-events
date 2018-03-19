@@ -24,14 +24,6 @@ struct Venue {
     private var localizedCountryName:String?
     private var zip:String?
     
-    var locationString:String? {
-        if let city = city, let state = state {
-            return "\(city), \(state)"
-        }else {
-            return nil
-        }
-    }
-    
     init(json:[String:Any]) {
         if let id = json[Fields.Venue.id] as? String {
             self.id = id
@@ -82,6 +74,7 @@ struct Venue {
         }
     }
     
+    //Get stylized address string
     func getAddressString () -> String? {
         var address = address1
         if let add2 = address2 {
@@ -99,11 +92,21 @@ struct Venue {
         
     }
     
+    //Open venue location in Maps
     func openInMaps () {
         guard let location = location else {return}
         let placemark = MKPlacemark(coordinate: location.coordinate)
         let mapItem = MKMapItem(placemark: placemark)
         mapItem.name = name
         mapItem.openInMaps(launchOptions: nil)
+    }
+    
+    //Get stylized location string
+    var locationString:String? {
+        if let city = city, let state = state {
+            return "\(city), \(state)"
+        }else {
+            return nil
+        }
     }
 }

@@ -32,6 +32,7 @@ struct Group {
             self.id = id
         }
         
+        //Set enum for join mode
         if let joinMode = json[Fields.Group.join_mode] as? String {
             switch joinMode {
             case Fields.Group.JoinValues.open: self.joinMode = .open
@@ -42,6 +43,7 @@ struct Group {
             
         }
         
+        //Set location for lat and lon
         if let lat = json[Fields.Group.lat] as? CLLocationDegrees, let lon = json[Fields.Group.lon] as? CLLocationDegrees {
             self.location = CLLocation(latitude: lat, longitude: lon)
         }

@@ -8,15 +8,20 @@
 
 import Foundation
 
+// Meetup API Constants
 struct MeetupAPI {
     static let API_KEY = "5e162d7314513c7d2b141a437e57515"
     static var eventsURL = "http://api.meetup.com/find/events"
+    
+    //Keys for events query
     struct Keys {
         static let key = "key"
         static let sign = "sign"
         static let fields = "fields"
         static let text = "text"
     }
+    
+    //Values for events query
     struct Values {
         static let featured_photo = "featured_photo"
         static let plain_text_description = "plain_text_description"
@@ -35,6 +40,7 @@ struct CellIDs {
 }
 
 struct Fields {
+    //Fields for events json
     struct Event {
         static let created = "created"
         static let duration = "duration"
@@ -59,6 +65,7 @@ struct Fields {
         static let featured_photo = "featured_photo"
         static let plain_text_description = "plain_text_description"
         
+        //Possible values of event status
         struct StatusValues {
             static let cancelled = "cancelled"
             static let upcoming = "upcoming"
@@ -68,6 +75,7 @@ struct Fields {
             static let draft = "draft"
         }
         
+        //Possible values for event visibility
         struct VisibilityValues {
             static let public_visiblity = "public"
             static let public_limited = "public_limited"
@@ -76,6 +84,7 @@ struct Fields {
         
     }
     
+    //Fields for Venue json
     struct Venue {
         static let id = "id"
         static let name = "name"
@@ -92,6 +101,7 @@ struct Fields {
         static let zip = "zip"
     }
     
+    //Fields for group json
     struct Group {
         static let created = "created"
         static let name = "name"
@@ -103,6 +113,7 @@ struct Fields {
         static let who = "who"
         static let localized_location = "localized_location"
 
+        //Possible values for join types
         struct JoinValues {
             static let open = "open"
             static let approval = "approval"
@@ -110,6 +121,7 @@ struct Fields {
         }
     }
     
+    //Fields for event featured photo
     struct FeaturedPhoto {
         static let base_url = "base_url"
         static let highres_link = "highres_link"

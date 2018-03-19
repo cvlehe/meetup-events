@@ -29,6 +29,7 @@ class EventTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
+    //populate cell from passed in event
     func populate (event:Event) {
         titleLabel.text = event.name
         
@@ -37,11 +38,13 @@ class EventTableViewCell: UITableViewCell {
         }
         descriptionLabel.text = event.plainTextDescription
         
+        //Hide favorite icon if event hasn't been favorited
         likedImageView.isHidden = !event.isFavorite()
         
         if let locationString = event.venue?.locationString {
             locationLabel.text = locationString
         }else {
+            //If location hasn't been set for event, hide label and icon
             locationLabel.isHidden = true
             locationImageView.isHidden = true
         }
@@ -52,7 +55,7 @@ class EventTableViewCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        
+        //reset cell for use, preventing cell from containing other event data
         titleLabel.text = ""
         eventImageView.image = #imageLiteral(resourceName: "placeholder")
         descriptionLabel.text = ""

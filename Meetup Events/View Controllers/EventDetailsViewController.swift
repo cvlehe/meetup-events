@@ -31,23 +31,37 @@ class EventDetailsViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         
+        //Populate passed-in event
+        populateEvent()
+  
+    }
+    
+    func populateEvent () {
         titleLabel.text = event.name
         titleLabel.sizeToFit()
         dateLabel.text = event.getTimeString()
         
         if let photoUrl = event.getPhotoUrl() {
+            //Load image from captured url
             imageView.sd_setImage(with: URL(string: photoUrl), placeholderImage: #imageLiteral(resourceName: "placeholder"))
         }
+        
+        //Set favorite button to selected/unselected
         setSavedButton()
+        
         locationLabel.text = event.venue?.getAddressString()
         descriptionLabel.text = event.plainTextDescription
         descriptionLabel.sizeToFit()
         venueLabel.text = event.venue?.name
+        
+        //Load venue location to maps
         if let location = event.venue?.location {
             let annotation = MKPointAnnotation()
             annotation.coordinate = location.coordinate
             mapView.addAnnotation(annotation)
             mapView.showAnnotations([annotation], animated: true)
+            
+            //Add tap to map view to allow user to tap the map to view in maps
             mapView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(EventDetailsViewController.mapViewTapped(_:))))
         }
         
@@ -60,15 +74,19 @@ class EventDetailsViewController: UIViewController {
     }
     
     @objc func mapViewTapped (_ tap:UITapGestureRecognizer) {
+        //Open venue location in Maps
         event.venue?.openInMaps()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        //Set scroll view size
         scrollView.contentSize = CGSize(width: UIScreen.main.bounds.size.width, height: mapView.frame.origin.y + mapView.frame.size.height + favoriteContainerView.frame.size.height)
         scrollView.isScrollEnabled = true
     }
     
+    //Set favorite button to selected/unselected
     func setSavedButton () {
         saveButton.setImage(event.isFavorite() ? #imageLiteral(resourceName: "saved") : #imageLiteral(resourceName: "save"), for: .normal)
     }
@@ -78,11 +96,16 @@ class EventDetailsViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    
     @IBAction func saveButtonPressed(_ sender: UIButton) {
+        //Toggle event favorite status
         event.toggleFavorite()
+        
+        //Reset save button for changed favorite status
         setSavedButton()
     }
     
+    //Display Event details for event
     static func display (navigationController:UINavigationController?, event:Event) {
         let detailsView = navigationController!.storyboard!.instantiateViewController(withIdentifier: ViewControllerIDs.EventDetailsViewController) as! EventDetailsViewController
         detailsView.event = event
