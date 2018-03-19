@@ -38,6 +38,12 @@ class FeaturedPhoto {
     }
     
     func getPhotoUrl()->String? {
-        return photoLink
+        if let photoLink = self.photoLink {
+            return photoLink
+        }else if let highResLink = self.highResLink {
+            return highResLink
+        }else {
+            return thumbLink
+        }
     }
 }

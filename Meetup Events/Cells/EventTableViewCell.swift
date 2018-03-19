@@ -12,8 +12,11 @@ import SDWebImage
 class EventTableViewCell: UITableViewCell {
     @IBOutlet weak var eventImageView: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var favoriteButton: UIButton!
     @IBOutlet weak var descriptionLabel: UILabel!
+    @IBOutlet weak var likedImageView: UIImageView!
+    @IBOutlet weak var timeLabel: UILabel!
+    @IBOutlet weak var locationLabel: UILabel!
+    @IBOutlet weak var locationImageView: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -33,6 +36,18 @@ class EventTableViewCell: UITableViewCell {
             eventImageView.sd_setImage(with: URL(string: photoUrl), placeholderImage: #imageLiteral(resourceName: "placeholder"))
         }
         descriptionLabel.text = event.plainTextDescription
+        
+        likedImageView.isHidden = !event.isFavorite()
+        
+        if let locationString = event.venue?.locationString {
+            locationLabel.text = locationString
+        }else {
+            locationLabel.isHidden = true
+            locationImageView.isHidden = true
+        }
+    
+        timeLabel.text = event.getDateString()
+        
     }
     
     override func prepareForReuse() {
@@ -41,6 +56,9 @@ class EventTableViewCell: UITableViewCell {
         titleLabel.text = ""
         eventImageView.image = #imageLiteral(resourceName: "placeholder")
         descriptionLabel.text = ""
+        likedImageView.isHidden = true
+        timeLabel.text = ""
+        locationLabel.text = ""
         
     }
 

@@ -25,6 +25,9 @@ struct MeetupAPI {
 struct UserDefaultKeys {
     static let favorites = "favorites"
 }
+struct ViewControllerIDs {
+    static let EventDetailsViewController = "EventDetailsViewController"
+}
 
 struct CellIDs {
     static let EventTableViewCell = "EventTableViewCell"

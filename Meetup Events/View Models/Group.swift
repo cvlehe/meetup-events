@@ -11,7 +11,7 @@ import CoreLocation
 
 struct Group {
     private var created:Date?
-    private var name:String?
+    var name:String?
     private var id:String?
     private var joinMode:JoinMode?
     private var location:CLLocation?

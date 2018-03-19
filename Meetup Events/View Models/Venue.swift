@@ -8,11 +8,12 @@
 
 import Foundation
 import CoreLocation
+import MapKit
 
 struct Venue {
     private var id:String?
-    private var name:String?
-    private var location:CLLocation?
+    var name:String?
+    var location:CLLocation?
     private var repinned = false
     private var address1:String?
     private var address2:String?
@@ -23,6 +24,13 @@ struct Venue {
     private var localizedCountryName:String?
     private var zip:String?
     
+    var locationString:String? {
+        if let city = city, let state = state {
+            return "\(city), \(state)"
+        }else {
+            return nil
+        }
+    }
     
     init(json:[String:Any]) {
         if let id = json[Fields.Venue.id] as? String {
@@ -72,5 +80,30 @@ struct Venue {
         if let zip = json[Fields.Venue.zip] as? String {
             self.zip = zip
         }
+    }
+    
+    func getAddressString () -> String? {
+        var address = address1
+        if let add2 = address2 {
+            address = add2
+        }
+        if let add3 = address3 {
+            address = add3
+        }
+        
+        guard let add = address, let city = city, let state = state, let zip = zip else {
+            return "\(address ?? "")\n"
+        }
+        
+        return "\(add)\n\(city), \(state) \(zip)"
+        
+    }
+    
+    func openInMaps () {
+        guard let location = location else {return}
+        let placemark = MKPlacemark(coordinate: location.coordinate)
+        let mapItem = MKMapItem(placemark: placemark)
+        mapItem.name = name
+        mapItem.openInMaps(launchOptions: nil)
     }
 }

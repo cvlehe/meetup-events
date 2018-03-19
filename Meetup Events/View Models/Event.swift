@@ -22,11 +22,11 @@ class Event {
     private var updated:Date?
     private var utcOffset:String?
     private var waitlistCount:Int?
-    private var yesRsvpCount:Int?
-    private var venue:Venue?
-    private var group:Group?
+    var yesRsvpCount = 0
+    var venue:Venue?
+    var group:Group?
     private var link:URL?
-    private var description:String?
+    var description:String?
     private var visibility:Visibility?
     private var howToFindUs:String?
     private var featuredPhoto:FeaturedPhoto?
@@ -183,6 +183,48 @@ class Event {
         return featuredPhoto?.getPhotoUrl()
     }
     
+    func getDateString () -> String? {
+        guard let time = self.time else {return nil}
+        let df = DateFormatter()
+        df.dateFormat = "MM/dd"
+        return df.string(from: time)
+    }
+    
+    func getTimeString () -> String? {
+        guard let time = self.time else {return nil}
+        let df = DateFormatter()
+        df.dateFormat = "MM/dd"
+        return "\(df.string(from: time)) - \(getLocalTimeString() ?? "")"
+    }
+    
+    func toggleFavorite () {
+        var array = [String]()
+        if let savedArray = UserDefaults.standard.array(forKey: UserDefaultKeys.favorites) as? [String] {
+            array = savedArray
+        }
+        
+        if let id = self.id {
+            if let index = array.index(of: id) {
+                array.remove(at: index)
+            }else {
+                array.append(id)
+                
+            }
+        }
+        UserDefaults.standard.set(array, forKey: UserDefaultKeys.favorites)
+        UserDefaults.standard.synchronize()
+    }
+    
+    private func getLocalTimeString ()->String? {
+        guard let localTime = localTime else {return nil}
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH:mm"
+        
+        let date = dateFormatter.date(from: localTime)
+        dateFormatter.dateFormat = "h:mm a"
+        return dateFormatter.string(from: date!)
+    }
+    
     
     enum Visibility {
         case publicVisiblity, members, publicLimited
@@ -191,4 +233,8 @@ class Event {
     enum Status {
         case cancelled, upcoming, past, proposed, suggested, draft
     }
+    
+    
+    
+    
 }
