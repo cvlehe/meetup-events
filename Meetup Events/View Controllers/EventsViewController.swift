@@ -18,7 +18,7 @@ class EventsViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
 
-        Event.getEvents { (events) in
+        Event.getEvents(searchText: nil) { (events) in
             self.events = events
             self.tableView.reloadData()
         }
@@ -71,6 +71,20 @@ extension EventsViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
+    }
+}
+
+extension EventsViewController:UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        var text:String?
+        if let searchText = searchBar.text, searchText.replacingOccurrences(of: " ", with: "") != "" {
+            text = searchText
+        }
+        
+        Event.getEvents(searchText: text) { (events) in
+            self.events = events
+            self.tableView.reloadData()
+        }
     }
 }
 

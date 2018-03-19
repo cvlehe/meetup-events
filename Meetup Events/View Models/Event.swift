@@ -134,12 +134,14 @@ class Event {
     
 
     
-    static func getEvents (completion:@escaping (_ events:[Event])->Void) {
+    static func getEvents (searchText:String?, completion:@escaping (_ events:[Event])->Void) {
         let url = MeetupAPI.eventsURL
-        print("URL:",url)
         var parameters = [String:Any]()
         parameters[MeetupAPI.Keys.key] = MeetupAPI.API_KEY
         parameters[MeetupAPI.Keys.sign] = true
+        if let text = searchText {
+            parameters[MeetupAPI.Keys.text] = text
+        }
         parameters[MeetupAPI.Keys.fields] = [MeetupAPI.Values.featured_photo,MeetupAPI.Values.plain_text_description].joined(separator: ",")
         
         Alamofire.request(url, method: .get, parameters: parameters, encoding: URLEncoding(destination: .queryString),headers: nil)

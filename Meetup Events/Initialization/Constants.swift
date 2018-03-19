@@ -15,6 +15,7 @@ struct MeetupAPI {
         static let key = "key"
         static let sign = "sign"
         static let fields = "fields"
+        static let text = "text"
     }
     struct Values {
         static let featured_photo = "featured_photo"
