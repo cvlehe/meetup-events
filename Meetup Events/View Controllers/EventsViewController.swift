@@ -7,11 +7,17 @@
 //
 
 import UIKit
+import CoreLocation
+import LocationPicker
+import MapKit
 
 class EventsViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     var events = [Event]()
     var selectedIndexPath:IndexPath?
+    @IBOutlet weak var locationView: UIView!
+    @IBOutlet weak var locationLabel: UILabel!
+    var selectedLocation:CLLocation?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,6 +26,9 @@ class EventsViewController: UIViewController {
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
 
         //Load all events
+        
+        locationView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(EventsViewController.locationViewTapped(_:))))
+        locationLabel.text = ""
         Event.getEvents(searchText: nil) { (events) in
             self.events = events
             self.tableView.reloadData()
@@ -38,6 +47,18 @@ class EventsViewController: UIViewController {
         if let indexPath = selectedIndexPath {
             tableView.reloadRows(at: [indexPath], with: .automatic)
         }
+    }
+    
+    @objc func locationViewTapped (_ tap:UITapGestureRecognizer) {
+        let locationPicker = LocationPickerViewController()
+        if let initialLocation = selectedLocation {
+            locationPicker.location = Location(name: nil, location: initialLocation, placemark: MKPlacemark(coordinate: initialLocation.coordinate))
+        }
+        locationPicker.mapType = .standard
+        locationPicker.completion = {location in
+            
+        }
+        navigationController?.pushViewController(locationPicker, animated: true)
     }
 
 }

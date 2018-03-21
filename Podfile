@@ -8,4 +8,5 @@ target 'Meetup Events' do
   # Pods for Meetup Events
   pod 'Alamofire', '~> 4.7'
   pod 'SDWebImage', '~> 4.3'
+  pod 'LocationPicker', '~> 1.1'
 end

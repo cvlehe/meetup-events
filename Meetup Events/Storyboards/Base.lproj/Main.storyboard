@@ -27,7 +27,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ahH-bD-qKC">
-                                <rect key="frame" x="0.0" y="116" width="375" height="551"/>
+                                <rect key="frame" x="0.0" y="146" width="375" height="521"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="EventTableViewCell" rowHeight="120" id="Zbp-di-4RJ" customClass="EventTableViewCell" customModule="Meetup_Events" customModuleProvider="target">
@@ -145,15 +145,46 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="Isq-Ue-Si5"/>
                                 </connections>
                             </searchBar>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="U40-a1-Alb">
+                                <rect key="frame" x="0.0" y="116" width="375" height="30"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Location" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="m5R-tl-9Gn">
+                                        <rect key="frame" x="39" y="4" width="297" height="22"/>
+                                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="17"/>
+                                        <color key="textColor" red="0.49014991521835327" green="0.49414670467376709" blue="0.49405586719512939" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="edit" translatesAutoresizingMaskIntoConstraints="NO" id="3qn-17-Wm4">
+                                        <rect key="frame" x="344" y="7" width="23" height="17"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="23" id="UNA-V3-hZx"/>
+                                            <constraint firstAttribute="height" constant="17" id="cbs-S7-EAV"/>
+                                        </constraints>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" red="0.89457168774694507" green="0.90236453546760564" blue="0.9257430786295876" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="3qn-17-Wm4" secondAttribute="trailing" constant="8" id="6Za-Bv-E5i"/>
+                                    <constraint firstAttribute="height" constant="30" id="Ley-FC-sBf"/>
+                                    <constraint firstItem="3qn-17-Wm4" firstAttribute="centerY" secondItem="U40-a1-Alb" secondAttribute="centerY" id="MnT-oe-5HG"/>
+                                    <constraint firstItem="3qn-17-Wm4" firstAttribute="leading" secondItem="m5R-tl-9Gn" secondAttribute="trailing" constant="8" id="Z6A-Lm-90i"/>
+                                    <constraint firstItem="m5R-tl-9Gn" firstAttribute="leading" secondItem="U40-a1-Alb" secondAttribute="leading" constant="39" id="gbt-3u-8o4"/>
+                                    <constraint firstAttribute="bottom" secondItem="m5R-tl-9Gn" secondAttribute="bottom" constant="4" id="wzI-ef-qnq"/>
+                                    <constraint firstItem="m5R-tl-9Gn" firstAttribute="top" secondItem="U40-a1-Alb" secondAttribute="top" constant="4" id="x2U-hU-r2e"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="Q2a-ie-Sbv" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="60" id="AJ2-AW-YDz"/>
+                            <constraint firstItem="U40-a1-Alb" firstAttribute="top" secondItem="Q2a-ie-Sbv" secondAttribute="bottom" id="CV9-O1-BQw"/>
                             <constraint firstItem="Q2a-ie-Sbv" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="EW7-3c-a1Z"/>
                             <constraint firstItem="ahH-bD-qKC" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="EoI-lX-UIC"/>
                             <constraint firstItem="Q2a-ie-Sbv" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="GKe-Us-EZg"/>
+                            <constraint firstItem="ahH-bD-qKC" firstAttribute="top" secondItem="U40-a1-Alb" secondAttribute="bottom" id="SXr-ee-Clh"/>
                             <constraint firstItem="ahH-bD-qKC" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="T4g-Cu-i4H"/>
-                            <constraint firstItem="ahH-bD-qKC" firstAttribute="top" secondItem="Q2a-ie-Sbv" secondAttribute="bottom" id="f2j-zL-GyX"/>
+                            <constraint firstItem="U40-a1-Alb" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="boa-am-jfP"/>
+                            <constraint firstItem="U40-a1-Alb" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="p27-sU-XqJ"/>
                             <constraint firstItem="ahH-bD-qKC" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="v6I-DV-Ucg"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -162,6 +193,8 @@
                         <barButtonItem key="backBarButtonItem" title="Back" id="jT9-Jg-49P"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="locationLabel" destination="m5R-tl-9Gn" id="9FG-Jz-VFd"/>
+                        <outlet property="locationView" destination="U40-a1-Alb" id="Gft-gO-5mF"/>
                         <outlet property="tableView" destination="ahH-bD-qKC" id="F0m-th-uJ0"/>
                         <segue destination="ckg-m5-cUj" kind="show" identifier="event_details" id="G20-aA-IuI"/>
                     </connections>
@@ -416,7 +449,8 @@
         </scene>
     </scenes>
     <resources>
-        <image name="list_liked" width="14" height="13"/>
+        <image name="edit" width="33" height="33"/>
+        <image name="list_liked" width="33" height="33"/>
         <image name="location" width="33" height="33"/>
         <image name="placeholder" width="250" height="187"/>
         <image name="rsvp" width="33" height="33"/>
