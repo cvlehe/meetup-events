@@ -34,62 +34,30 @@ class Event {
     
     //Initialization for event with fetched json
     init(json:[String:Any]) {
+        
+        self.duration = json[Fields.Event.duration] as? Int
+        self.id = json[Fields.Event.id] as? String
+        self.name = json[Fields.Event.name] as? String
+        self.utcOffset = json[Fields.Event.utc_offset] as? String
+        self.waitlistCount = json[Fields.Event.waitlist_count] as? Int
+        self.localDate = json[Fields.Event.local_date] as? String
+        self.localTime = json[Fields.Event.local_time] as? String
+        self.rsvpCloseOffset = json[Fields.Event.rsvp_close_offset] as? String
+        self.description = json[Fields.Event.description] as? String
+        self.plainTextDescription = json[Fields.Event.plain_text_description] as? String
+        self.howToFindUs = json[Fields.Event.how_to_find_us] as? String
+
+        
         if let created = json[Fields.Event.created] as? TimeInterval {
             self.created = Date(timeIntervalSince1970: created)
-        }
-        
-        if let duration = json[Fields.Event.duration] as? Int {
-            self.duration = duration
-        }
-        
-        if let id = json[Fields.Event.id] as? String {
-            self.id = id
-        }
-        
-        if let name = json[Fields.Event.name] as? String {
-            self.name = name
-        }
-        
-        //setting enum for event status
-        if let status = json[Fields.Event.status] as? String {
-            switch status {
-            case Fields.Event.StatusValues.cancelled: self.status = .cancelled
-            case Fields.Event.StatusValues.upcoming: self.status = .upcoming
-            case Fields.Event.StatusValues.past: self.status = .past
-            case Fields.Event.StatusValues.proposed: self.status = .proposed
-            case Fields.Event.StatusValues.suggested: self.status = .suggested
-            case Fields.Event.StatusValues.draft: self.status = .draft
-            default:
-                break
-            }
         }
         
         if let time = json[Fields.Event.time] as? TimeInterval {
             self.time = Date(timeIntervalSince1970: time)
         }
         
-        if let localDate = json[Fields.Event.local_date] as? String {
-            self.localDate = localDate
-        }
-        
-        if let localTime = json[Fields.Event.local_time] as? String {
-            self.localTime = localTime
-        }
-        
-        if let rsvpCloseOffset = json[Fields.Event.rsvp_close_offset] as? String {
-            self.rsvpCloseOffset = rsvpCloseOffset
-        }
-        
         if let updated = json[Fields.Event.updated] as? TimeInterval {
             self.updated = Date(timeIntervalSince1970: updated)
-        }
-        
-        if let utcOffset = json[Fields.Event.utc_offset] as? String {
-            self.utcOffset = utcOffset
-        }
-        
-        if let waitlistCount = json[Fields.Event.waitlist_count] as? Int {
-            self.waitlistCount = waitlistCount
         }
         
         if let yesRsvpCount = json[Fields.Event.yes_rsvp_count] as? Int {
@@ -108,8 +76,22 @@ class Event {
             self.link = url
         }
         
-        if let description = json[Fields.Event.description] as? String {
-            self.description = description
+        if let featuredPhoto = json[Fields.Event.featured_photo] as? [String:Any] {
+            self.featuredPhoto = FeaturedPhoto(json: featuredPhoto)
+        }
+        
+        //setting enum for event status
+        if let status = json[Fields.Event.status] as? String {
+            switch status {
+            case Fields.Event.StatusValues.cancelled: self.status = .cancelled
+            case Fields.Event.StatusValues.upcoming: self.status = .upcoming
+            case Fields.Event.StatusValues.past: self.status = .past
+            case Fields.Event.StatusValues.proposed: self.status = .proposed
+            case Fields.Event.StatusValues.suggested: self.status = .suggested
+            case Fields.Event.StatusValues.draft: self.status = .draft
+            default:
+                break
+            }
         }
         
         //setting enum for event visibility
@@ -121,27 +103,24 @@ class Event {
             default: break
             }
         }
-        
-        if let howToFindUs = json[Fields.Event.how_to_find_us] as? String {
-            self.howToFindUs = howToFindUs
-        }
-        
-        if let featuredPhoto = json[Fields.Event.featured_photo] as? [String:Any] {
-            self.featuredPhoto = FeaturedPhoto(json: featuredPhoto)
-        }
-        
-        if let plainTextDescription = json[Fields.Event.plain_text_description] as? String {
-            self.plainTextDescription = plainTextDescription
-        }
+
     }
     
-
+    
     //Get events from API
-    static func getEvents (searchText:String?, completion:@escaping (_ events:[Event])->Void) {
+    static func getEvents (searchText:String?, city:City?, completion:@escaping (_ events:[Event], _ city:City?)->Void) {
         let url = MeetupAPI.eventsURL
         var parameters = [String:Any]()
         parameters[MeetupAPI.Keys.key] = MeetupAPI.API_KEY
         parameters[MeetupAPI.Keys.sign] = true
+        parameters[MeetupAPI.Keys.page] = 11
+        parameters[MeetupAPI.Keys.order] = MeetupAPI.Values.time
+        
+        //If selected location exists, add it to request
+        if let lat = city?.lat, let lon = city?.lon {
+            parameters[MeetupAPI.Keys.lat] = lat
+            parameters[MeetupAPI.Keys.lon] = lon
+        }
         
         //If search text exists, add it to request
         if let text = searchText {
@@ -154,20 +133,29 @@ class Event {
             .responseJSON { (response) in
                 if let error = response.error {
                     print("Request Error:",error)
-                }else if let data = response.data, let json = self.convertToArray(data: data) {
-                    var events = [Event]()
-                    for eventJson in json {
-                        events.append(Event(json: eventJson))
+                }else if
+                    let data = response.data,
+                    let json = self.convertToDictionary(data: data),
+                    let cityJson = json[MeetupAPI.Keys.city] as? [String:Any],
+                    let eventsJson = json[MeetupAPI.Keys.events] as? [[String:Any]]{
+                    
+                    var fetchedEvents = [Event]()
+                    for event in eventsJson {
+                        fetchedEvents.append(Event(json: event))
                     }
-                    completion(events)
+                    
+                    completion(fetchedEvents, City(json: cityJson))
+                    
+                }else {
+                    completion([], nil)
                 }
         }
     }
     
     //convert response data to array of dictionaries
-    private static func convertToArray(data:Data)->[[String:Any]]? {
+    private static func convertToDictionary(data:Data)->[String:Any]? {
         do {
-            let array = try JSONSerialization.jsonObject(with: data) as? [[String : Any]]
+            let array = try JSONSerialization.jsonObject(with: data) as? [String : Any]
             return array
         }catch {
             return nil

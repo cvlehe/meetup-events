@@ -19,6 +19,7 @@
 		0741DD39205EFDF800B1CD96 /* EventTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0741DD38205EFDF800B1CD96 /* EventTableViewCell.swift */; };
 		0741DD3B205F041E00B1CD96 /* FeaturedPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0741DD3A205F041E00B1CD96 /* FeaturedPhoto.swift */; };
 		0741DD3D205F0FD500B1CD96 /* EventDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0741DD3C205F0FD500B1CD96 /* EventDetailsViewController.swift */; };
+		0754F8782062AAF4002134F3 /* City.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0754F8772062AAF4002134F3 /* City.swift */; };
 		07793B46205B7B0D00EC022E /* splash_image.png in Resources */ = {isa = PBXBuildFile; fileRef = 07793B45205B7B0D00EC022E /* splash_image.png */; };
 		E211ED23C01087661BA4FA42 /* Pods_Meetup_Events.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 40EF5D25435CD7043EE0FAEE /* Pods_Meetup_Events.framework */; };
 /* End PBXBuildFile section */
@@ -38,6 +39,7 @@
 		0741DD38205EFDF800B1CD96 /* EventTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventTableViewCell.swift; sourceTree = "<group>"; };
 		0741DD3A205F041E00B1CD96 /* FeaturedPhoto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeaturedPhoto.swift; sourceTree = "<group>"; };
 		0741DD3C205F0FD500B1CD96 /* EventDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventDetailsViewController.swift; sourceTree = "<group>"; };
+		0754F8772062AAF4002134F3 /* City.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = City.swift; sourceTree = "<group>"; };
 		07793B45205B7B0D00EC022E /* splash_image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = splash_image.png; sourceTree = "<group>"; };
 		0C2809065A5368BC284E7C83 /* Pods-Meetup Events.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Meetup Events.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Meetup Events/Pods-Meetup Events.debug.xcconfig"; sourceTree = "<group>"; };
 		40EF5D25435CD7043EE0FAEE /* Pods_Meetup_Events.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Meetup_Events.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -120,6 +122,7 @@
 			isa = PBXGroup;
 			children = (
 				0741DD2F205ED80B00B1CD96 /* Event.swift */,
+				0754F8772062AAF4002134F3 /* City.swift */,
 				0741DD33205EDAEF00B1CD96 /* Venue.swift */,
 				0741DD35205EDB0200B1CD96 /* Group.swift */,
 				0741DD3A205F041E00B1CD96 /* FeaturedPhoto.swift */,
@@ -292,6 +295,7 @@
 				0741DD30205ED80B00B1CD96 /* Event.swift in Sources */,
 				0741DD36205EDB0200B1CD96 /* Group.swift in Sources */,
 				0741DD39205EFDF800B1CD96 /* EventTableViewCell.swift in Sources */,
+				0754F8782062AAF4002134F3 /* City.swift in Sources */,
 				0741DD3D205F0FD500B1CD96 /* EventDetailsViewController.swift in Sources */,
 				0718BF8B205B76080051053B /* AppDelegate.swift in Sources */,
 				0741DD32205ED83000B1CD96 /* Constants.swift in Sources */,

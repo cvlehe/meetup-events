@@ -195,6 +195,7 @@
                     <connections>
                         <outlet property="locationLabel" destination="m5R-tl-9Gn" id="9FG-Jz-VFd"/>
                         <outlet property="locationView" destination="U40-a1-Alb" id="Gft-gO-5mF"/>
+                        <outlet property="searchBar" destination="Q2a-ie-Sbv" id="GHA-nP-Wmx"/>
                         <outlet property="tableView" destination="ahH-bD-qKC" id="F0m-th-uJ0"/>
                         <segue destination="ckg-m5-cUj" kind="show" identifier="event_details" id="G20-aA-IuI"/>
                     </connections>

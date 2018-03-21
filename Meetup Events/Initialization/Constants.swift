@@ -11,7 +11,7 @@ import Foundation
 // Meetup API Constants
 struct MeetupAPI {
     static let API_KEY = "5e162d7314513c7d2b141a437e57515"
-    static var eventsURL = "http://api.meetup.com/find/events"
+    static var eventsURL = "http://api.meetup.com/find/upcoming_events"
     
     //Keys for events query
     struct Keys {
@@ -19,12 +19,20 @@ struct MeetupAPI {
         static let sign = "sign"
         static let fields = "fields"
         static let text = "text"
+        static let city = "city"
+        static let events = "events"
+        static let lat = "lat"
+        static let lon = "lon"
+        static let state = "state"
+        static let page = "page"
+        static let order = "order"
     }
     
     //Values for events query
     struct Values {
         static let featured_photo = "featured_photo"
         static let plain_text_description = "plain_text_description"
+        static let time = "time"
     }
 }
 

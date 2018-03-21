@@ -20,16 +20,14 @@ struct Group {
     private var localizedLocation:String?
     
     init(json:[String:Any]) {
+        self.name = json[Fields.Group.name] as? String
+        self.id = json[Fields.Group.id] as? String
+        self.urlName = json[Fields.Group.urlname] as? String
+        self.who = json[Fields.Group.who] as? String
+        self.localizedLocation = json[Fields.Group.localized_location] as? String
+
         if let created = json[Fields.Group.created] as? TimeInterval {
             self.created = Date(timeIntervalSince1970: created)
-        }
-        
-        if let name = json[Fields.Group.name] as? String {
-            self.name = name
-        }
-        
-        if let id = json[Fields.Group.id] as? String {
-            self.id = id
         }
         
         //Set enum for join mode
@@ -46,18 +44,6 @@ struct Group {
         //Set location for lat and lon
         if let lat = json[Fields.Group.lat] as? CLLocationDegrees, let lon = json[Fields.Group.lon] as? CLLocationDegrees {
             self.location = CLLocation(latitude: lat, longitude: lon)
-        }
-        
-        if let urlName = json[Fields.Group.urlname] as? String {
-            self.urlName = urlName
-        }
-        
-        if let who = json[Fields.Group.who] as? String {
-            self.who = who
-        }
-        
-        if let localizedLocation = json[Fields.Group.localized_location] as? String {
-            self.localizedLocation = localizedLocation
         }
     }
     
