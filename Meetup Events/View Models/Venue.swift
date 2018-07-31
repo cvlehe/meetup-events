@@ -25,13 +25,17 @@ struct Venue {
     private var zip:String?
     
     init(json:[String:Any]) {
-        if let id = json[Fields.Venue.id] as? String {
-            self.id = id
-        }
-        
-        if let name = json[Fields.Venue.name] as? String {
-            self.name = name
-        }
+        self.id = json[Fields.Venue.id] as? String
+        self.name = json[Fields.Venue.name] as? String
+        self.address1 = json[Fields.Venue.address_1] as? String
+        self.address2 = json[Fields.Venue.address_2] as? String
+        self.address3 = json[Fields.Venue.address_3] as? String
+        self.city = json[Fields.Venue.city] as? String
+        self.state = json[Fields.Venue.state] as? String
+        self.country = json[Fields.Venue.country] as? String
+        self.localizedCountryName = json[Fields.Venue.localized_country_name] as? String
+        self.zip = json[Fields.Venue.zip] as? String
+
         
         if let lat = json[Fields.Venue.lat] as? CLLocationDegrees, let lon = json[Fields.Venue.lon] as? CLLocationDegrees {
             self.location = CLLocation(latitude: lat, longitude: lon)
@@ -39,38 +43,6 @@ struct Venue {
         
         if let repinned = json[Fields.Venue.repinned] as? Bool {
             self.repinned = repinned
-        }
-        
-        if let address1 = json[Fields.Venue.address_1] as? String {
-            self.address1 = address1
-        }
-        
-        if let address2 = json[Fields.Venue.address_2] as? String {
-            self.address2 = address2
-        }
-        
-        if let address3 = json[Fields.Venue.address_3] as? String {
-            self.address3 = address3
-        }
-        
-        if let city = json[Fields.Venue.city] as? String {
-            self.city = city
-        }
-        
-        if let state = json[Fields.Venue.state] as? String {
-            self.state = state
-        }
-        
-        if let country = json[Fields.Venue.country] as? String {
-            self.country = country
-        }
-        
-        if let localizedCountryName = json[Fields.Venue.localized_country_name] as? String {
-            self.localizedCountryName = localizedCountryName
-        }
-        
-        if let zip = json[Fields.Venue.zip] as? String {
-            self.zip = zip
         }
     }
     

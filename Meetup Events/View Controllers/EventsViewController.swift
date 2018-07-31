@@ -7,11 +7,18 @@
 //
 
 import UIKit
+import CoreLocation
+import LocationPicker
+import MapKit
 
 class EventsViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
-    var events = [Event]()
-    var selectedIndexPath:IndexPath?
+    private var events = [Event]()
+    private var selectedIndexPath:IndexPath?
+    @IBOutlet weak var locationView: UIView!
+    @IBOutlet weak var locationLabel: UILabel!
+    private var selectedCity:City?
+    @IBOutlet weak var searchBar: UISearchBar!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,9 +27,13 @@ class EventsViewController: UIViewController {
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedStringKey.foregroundColor: UIColor.white]
 
         //Load all events
-        Event.getEvents(searchText: nil) { (events) in
+        
+        locationView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(EventsViewController.locationViewTapped(_:))))
+        locationLabel.text = ""
+        Event.getEvents(searchText: nil, city: nil) { (events, city) in
             self.events = events
             self.tableView.reloadData()
+            self.setSelectedCity(city: city)
         }
     }
 
@@ -38,6 +49,43 @@ class EventsViewController: UIViewController {
         if let indexPath = selectedIndexPath {
             tableView.reloadRows(at: [indexPath], with: .automatic)
         }
+    }
+    
+    func setSelectedCity(city:City?) {
+        //Set the selected city and display in the location label
+        self.selectedCity = city
+        if let cityString = city?.city, let stateString = city?.state {
+            locationLabel.text = "\(cityString), \(stateString)"
+        }else {
+            locationLabel.text = "Select Loction"
+        }
+    }
+    
+    @objc func locationViewTapped (_ tap:UITapGestureRecognizer) {
+        //Display Location picker
+        
+        let locationPicker = LocationPickerViewController()
+        if let lat = selectedCity?.lat, let lon = selectedCity?.lon {
+            let location = CLLocation(latitude: lat, longitude: lon)
+            let initalLocaiton = Location(name: selectedCity?.city, location: location, placemark: MKPlacemark(coordinate: location.coordinate))
+            locationPicker.location = initalLocaiton
+        }
+        locationPicker.mapType = .standard
+        locationPicker.showCurrentLocationButton = false
+        
+        locationPicker.completion = {location in
+            //If location selected, reload events for selected location
+            if let placemark = location?.placemark {
+                self.searchBar.text = ""
+                self.setSelectedCity(city: City(placemark: placemark))
+                Event.getEvents(searchText: nil, city: self.selectedCity) { (events, city) in
+                    self.setSelectedCity(city: city)
+                    self.events = events
+                    self.tableView.reloadData()
+                }
+            }
+        }
+        navigationController?.pushViewController(locationPicker, animated: true)
     }
 
 }
@@ -56,6 +104,11 @@ extension EventsViewController: UITableViewDelegate {
         selectedIndexPath = indexPath
         
         EventDetailsViewController.display(navigationController: navigationController, event: events[indexPath.row])
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        //Hide search bar keyboard when scrolled
+        searchBar.resignFirstResponder()
     }
 }
 
@@ -84,7 +137,8 @@ extension EventsViewController:UISearchBarDelegate {
             text = searchText
         }
         
-        Event.getEvents(searchText: text) { (events) in
+        Event.getEvents(searchText: text, city: selectedCity) { (events, city) in
+            self.setSelectedCity(city: city)
             self.events = events
             self.tableView.reloadData()
         }
